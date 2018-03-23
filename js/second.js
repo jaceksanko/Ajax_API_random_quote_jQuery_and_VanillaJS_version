@@ -18,9 +18,10 @@ function getQuote() {
     requestQuoteUrl.open('GET', prefix + quoteUrl + "&value" + randomString());
     requestQuoteUrl.addEventListener('load', createTweet);
     requestQuoteUrl.send();
+}
 
-function createTweet() {
-    let responseQuoteUrl = JSON.parse(requestQuoteUrl.response);
+function createTweet(input) {
+    let responseQuoteUrl = JSON.parse(input.currentTarget.response);
 
     let data = responseQuoteUrl[0];
 
@@ -33,7 +34,7 @@ function createTweet() {
     const regHtmlTag = /<(?:.|\s)*?>/g;
 
     let quoteText = data.content.replace(reg1, "'").replace(reg2, "-").replace(reg3, "“").replace(reg4, "”").replace(reg5, "‘").replace(reg6, "&").replace(regHtmlTag, '');  //slice(3, -5);
-    console.log(quoteText);
+    
     let quoteAuthor = data.title;
 
     if (!quoteAuthor.length) {
@@ -51,7 +52,6 @@ function createTweet() {
         document.querySelector('.author').textContent = "Author: " + quoteAuthor;
         document.querySelector('.tweet').setAttribute('href', tweet);
     }
-}
 }
 
 getQuote();
