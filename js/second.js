@@ -4,9 +4,18 @@ let prefix = "https://cors-anywhere.herokuapp.com/";
 let tweetLink = "https://twitter.com/intent/tweet?text=";
 let quoteUrl = "https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1";
 
+function randomString() {
+    let chars = '0123456789abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXTZ';
+    let str = '';
+    for (let i = 0; i < 10; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
+}
+
 function getQuote() {
     let requestQuoteUrl = new XMLHttpRequest();
-    requestQuoteUrl.open('GET', prefix + quoteUrl);
+    requestQuoteUrl.open('GET', prefix + quoteUrl + "&value" + randomString());
     requestQuoteUrl.addEventListener('load', createTweet);
     requestQuoteUrl.send();
 
@@ -37,6 +46,7 @@ function createTweet() {
     }
     else { 
         let tweet = tweetLink + encodeURIComponent(tweetText);
+        document.querySelector("#dvloader").style.display = 'none';
         document.querySelector('.quote').textContent = quoteText;
         document.querySelector('.author').textContent = "Author: " + quoteAuthor;
         document.querySelector('.tweet').setAttribute('href', tweet);
@@ -47,5 +57,8 @@ function createTweet() {
 getQuote();
 
 document.querySelector('.trigger').addEventListener('click', function() {
-        getQuote();
+    document.querySelector("#dvloader").style.display = 'block';
+    document.querySelector('.quote').textContent = '';
+    document.querySelector('.author').textContent = '';
+    getQuote();
     });
