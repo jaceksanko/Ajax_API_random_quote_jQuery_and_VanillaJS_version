@@ -24,6 +24,7 @@ function createTweet(input) {
     }
     else {
         var tweet = tweetLink + encodeURIComponent(tweetText);
+        $("#dvloader").hide();
         $('.quote').text(quoteText);
         $('.author').text("Author: " + quoteAuthor);
         $('.tweet').attr('href', tweet);
@@ -33,6 +34,9 @@ function createTweet(input) {
 $(document).ready(function() {
     getQuote();
     $('.trigger').click(function() {
+        $("#dvloader").show();
+        $('.quote').text('');
+        $('.author').text('');
         getQuote();
     })
 });
